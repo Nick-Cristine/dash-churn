@@ -1,0 +1,260 @@
+---
+title: "Radar de Churn — Polo Franquia Parnaíba"
+format:
+  dashboard:
+    theme: [cosmo, custom.scss]
+    nav-buttons: []
+    include-in-header:
+      text: |
+        <script src="plotly.min.js"></script>
+execute:
+  echo: false
+  warning: false
+---
+
+<!--
+ATENÇÃO: protótipo. Os dados de origem (clientes_risco.json, gerado por
+build_churn_data.py a partir de base_edited.parquet) já estão anonimizados
+(Documento/Nome_fantasia/Vendedor), mas confirme antes de publicar fora do
+ambiente interno.
+-->
+
+```{python}
+#| label: setup
+import json
+from pathlib import Path
+import uuid
+import pandas as pd
+import plotly.graph_objects as go
+from IPython.display import HTML, display
+
+STONE_GREEN = "#52C465"
+STONE_RED   = "#FC4828"
+STONE_GRAY  = "#B0B0B0"
+STONE_DARK  = "#3A3A3A"
+
+payload = json.loads(Path("clientes_risco.json").read_text(encoding="utf-8"))
+clientes = payload["clientes"]
+media_tpv = payload["media_tpv_ativos_m0"]
+df_rank = pd.DataFrame(clientes).sort_values("risk_score")
+```
+
+# Clientes em Risco de Churn
+
+## Row {height="90px"}
+
+```{python}
+#| content: valuebox
+#| title: "Mês de referência"
+#| color: "#52C465"
+dict(value = payload["mes_referencia"])
+```
+
+```{python}
+#| content: valuebox
+#| title: "Clientes ativos na carteira"
+#| color: "#52C465"
+dict(value = f"{payload['total_clientes_ativos']:,}".replace(",", "."))
+```
+
+```{python}
+#| content: valuebox
+#| title: "Score do 10º colocado (Top 10)"
+#| color: "#FC4828"
+dict(value = f"{df_rank['risk_score'].min():.1f}")
+```
+
+## Row {height="40px"}
+
+```{=html}
+<div class="callout-note">
+⚠️ <b>Score de risco provisório</b>: regra de negócio (50% percentil de dias sem transacionar + 50% percentil da
+queda de TPV vs. média dos 3 meses anteriores), calculada só entre clientes ativos — <b>não é um modelo de Machine
+Learning</b>. Serve para validar este protótipo até o modelo real (treinado com <code>flag_churn</code>) ficar pronto.
+</div>
+```
+
+## Row {height="620px"}
+
+```{python}
+#| title: "Top 10 — clique ou passe o mouse em um cliente para ver os detalhes ao lado"
+bar_div = "bar_" + uuid.uuid4().hex[:8]
+
+fig_bar = go.Figure(go.Bar(
+    x=df_rank["risk_score"], y=df_rank["nome_fantasia"], orientation="h",
+    marker_color=STONE_GRAY,
+    customdata=df_rank["documento"],
+    hovertemplate="<b>%{y}</b><br>Score de risco: %{x}<extra></extra>",
+))
+_ = fig_bar.update_layout(
+    template="simple_white", margin=dict(t=10, l=10, r=10, b=10),
+    xaxis_title="Score de risco (0–100)", height=560,
+)
+fig_bar_json = fig_bar.to_json()
+
+clientes_json = json.dumps(clientes, ensure_ascii=False)
+docs_order_json = json.dumps(df_rank["documento"].tolist())
+
+display(HTML(f'''
+<div id="{bar_div}" style="width:100%;height:560px;"></div>
+<script>
+window.__CLIENTES__ = {clientes_json};
+window.__DOCS_ORDER__ = {docs_order_json};
+window.__MEDIA_TPV__ = {media_tpv};
+window.__ANO_YTD__ = {payload["ano_ytd"]};
+(function() {{
+  const figData = {fig_bar_json};
+  function draw() {{
+    if (!window.Plotly) {{ setTimeout(draw, 100); return; }}
+    Plotly.newPlot("{bar_div}", figData.data, figData.layout, {{responsive: true, displaylogo: false}});
+    const gd = document.getElementById("{bar_div}");
+    const colorFor = (doc) => (doc === (window.__CURRENT_DOC__ || window.__DOCS_ORDER__[window.__DOCS_ORDER__.length-1])) ? "{STONE_RED}" : "{STONE_GRAY}";
+    function paint() {{
+      Plotly.restyle("{bar_div}", {{"marker.color": [window.__DOCS_ORDER__.map(colorFor)]}});
+    }}
+    gd.on("plotly_hover", (ev) => {{
+      const doc = ev.points[0].customdata;
+      window.__CURRENT_DOC__ = doc;
+      if (window.updateClientCard) window.updateClientCard(doc);
+      paint();
+    }});
+    gd.on("plotly_click", (ev) => {{
+      const doc = ev.points[0].customdata;
+      window.__CURRENT_DOC__ = doc;
+      if (window.updateClientCard) window.updateClientCard(doc);
+      paint();
+    }});
+    paint();
+  }}
+  draw();
+}})();
+</script>
+'''))
+```
+
+```{python}
+#| title: "Cliente selecionado"
+card_div = "card_" + uuid.uuid4().hex[:8]
+tpv_div = "tpv_" + uuid.uuid4().hex[:8]
+
+display(HTML(f'''
+<div style="display:flex;flex-direction:column;gap:10px;">
+  <div id="{card_div}"></div>
+  <div id="{tpv_div}" style="width:100%;height:260px;"></div>
+</div>
+
+<script>
+(function() {{
+  const CARD_DIV = "{card_div}";
+  const TPV_DIV = "{tpv_div}";
+  const STONE_RED = "{STONE_RED}";
+  const STONE_GRAY = "{STONE_GRAY}";
+
+  function fmtBRL(v) {{
+    if (v === null || v === undefined) return "—";
+    return "R$ " + Number(v).toLocaleString("pt-BR", {{maximumFractionDigits: 0}});
+  }}
+
+  function buildEmail(c) {{
+    const assunto = `[Risco de churn] Ação necessária — ${{c.nome_fantasia}}`;
+    const corpo =
+`Olá,
+
+O cliente ${{c.nome_fantasia}} (documento ${{c.documento}}, ${{c.cidade}}/${{c.uf}}, rota ${{c.rota}}) está` +
+` classificado como Top ${{c.rank}} em risco de churn para o próximo mês (score ${{c.risk_score}}/100).
+
+Resumo:
+- Dias sem transacionar: ${{c.dias_sem_transacionar}}
+- Queda de TPV (3m vs. atual): ${{c.queda_tpv_pct !== null ? c.queda_tpv_pct + "%" : "n/d"}}
+- TPV do mês atual: ${{fmtBRL(c.tpv_m0)}}
+- Tempo de casa: ${{c.tempo_casa_anos}} anos
+- Segmento: ${{c.mcc}}
+- Canais já utilizados: ${{c.canais_historico.join(", ")}}
+
+Recomenda-se iniciar contato ativo com o cliente o quanto antes.
+
+— Radar de Churn (protótipo)`;
+    return {{assunto, corpo}};
+  }}
+
+  window.updateClientCard = function(documento) {{
+    const c = window.__CLIENTES__.find(x => x.documento === documento);
+    if (!c) return;
+
+    const canaisHtml = c.canais_historico.map(ch =>
+      `<span style="display:inline-block;background:#F0F7F1;color:#2f6e3a;border-radius:999px;padding:2px 10px;margin:2px;font-size:0.78rem;">${{ch}}</span>`
+    ).join("");
+
+    document.getElementById(CARD_DIV).innerHTML = `
+      <div style="font-size:1.15rem;font-weight:700;margin-bottom:6px;">#${{c.rank}} · ${{c.nome_fantasia}}</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div><div style="font-size:0.72rem;color:#888;">Score de risco</div><div style="font-size:1.3rem;font-weight:700;color:${{STONE_RED}}">${{c.risk_score}}</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Dias sem transacionar</div><div style="font-size:1.3rem;font-weight:700;">${{c.dias_sem_transacionar ?? "—"}}</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Queda de TPV (3m)</div><div style="font-size:1.3rem;font-weight:700;">${{c.queda_tpv_pct !== null ? c.queda_tpv_pct + "%" : "—"}}</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Tempo de casa</div><div style="font-size:1.3rem;font-weight:700;">${{c.tempo_casa_anos ?? "—"}} anos</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:0.88rem;margin-bottom:8px;">
+        <div><b>Documento:</b> ${{c.documento}}</div>
+        <div><b>Vendedor:</b> ${{c.vendedor}}</div>
+        <div><b>Cidade/UF:</b> ${{c.cidade}}/${{c.uf}}</div>
+        <div><b>Tipo de contrato:</b> ${{c.tipo_contrato ?? "—"}}</div>
+        <div><b>Rota:</b> ${{c.rota}}</div>
+        <div><b>Antecipação (RAV):</b> ${{c.cadastro_rav}}</div>
+        <div><b>Segmento (MCC):</b> ${{c.mcc}}</div>
+        <div><b>TPV do mês atual:</b> ${{fmtBRL(c.tpv_m0)}}</div>
+      </div>
+      <div style="font-size:0.8rem;color:#888;margin-bottom:4px;">Canais já utilizados (${{c.n_canais_historico}}):</div>
+      <div style="margin-bottom:10px;">${{canaisHtml}}</div>
+      <details style="margin-bottom:6px;">
+        <summary style="cursor:pointer;font-weight:600;color:${{STONE_RED}};">📧 Preparar e-mail para o vendedor</summary>
+        <div style="margin-top:8px;">
+          <input id="vendorEmailInput" type="email" placeholder="vendedor@querostone.com.br"
+            style="width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:6px;margin-bottom:8px;box-sizing:border-box;">
+          <pre id="emailPreview" style="white-space:pre-wrap;background:#F7F8F7;border-radius:8px;padding:10px;font-size:0.78rem;max-height:180px;overflow:auto;"></pre>
+          <a id="mailtoBtn" href="#" style="display:inline-block;background:${{STONE_RED}};color:white;padding:6px 14px;border-radius:8px;text-decoration:none;font-size:0.85rem;">✉️ Abrir e-mail para o vendedor</a>
+          <div style="font-size:0.72rem;color:#888;margin-top:4px;">Protótipo: abre seu cliente de e-mail com o texto pronto — não envia sozinho.</div>
+        </div>
+      </details>
+    `;
+
+    const {{assunto, corpo}} = buildEmail(c);
+    document.getElementById("emailPreview").textContent = `Assunto: ${{assunto}}\\n\\n${{corpo}}`;
+    const mailBtn = document.getElementById("mailtoBtn");
+    function refreshMailto() {{
+      const to = encodeURIComponent(document.getElementById("vendorEmailInput").value || "");
+      mailBtn.href = `mailto:${{to}}?subject=${{encodeURIComponent(assunto)}}&body=${{encodeURIComponent(corpo)}}`;
+    }}
+    document.getElementById("vendorEmailInput").addEventListener("input", refreshMailto);
+    refreshMailto();
+
+    const meses = c.tpv_ytd.map(p => p.mes);
+    const tpvs = c.tpv_ytd.map(p => p.tpv);
+    const trace = {{
+      x: meses, y: tpvs, mode: "lines+markers", type: "scatter",
+      line: {{color: STONE_RED, width: 2.5}},
+      hovertemplate: "%{{x}}<br>TPV: R$ %{{y:,.0f}}<extra></extra>",
+    }};
+    const layout = {{
+      template: "simple_white", height: 260,
+      title: `TPV mensal em ${{window.__ANO_YTD__}} (YTD)`,
+      margin: {{t: 40, l: 40, r: 10, b: 30}},
+      xaxis: {{type: "category"}},
+      shapes: [{{type: "line", x0: 0, x1: 1, xref: "paper", y0: window.__MEDIA_TPV__, y1: window.__MEDIA_TPV__,
+                 yref: "y", line: {{color: STONE_GRAY, dash: "dot"}}}}],
+      annotations: [{{x: 0, xref: "paper", y: window.__MEDIA_TPV__, yref: "y", xanchor: "left",
+                      text: "média da carteira ativa", showarrow: false, font: {{size: 10, color: "#888"}}}}],
+    }};
+    Plotly.react(TPV_DIV, [trace], layout, {{responsive: true, displaylogo: false}});
+  }};
+
+  function initialDraw() {{
+    if (!window.Plotly) {{ setTimeout(initialDraw, 100); return; }}
+    const startDoc = window.__DOCS_ORDER__[window.__DOCS_ORDER__.length - 1];
+    window.__CURRENT_DOC__ = startDoc;
+    window.updateClientCard(startDoc);
+  }}
+  initialDraw();
+}})();
+</script>
+'''))
+```

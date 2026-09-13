@@ -1,0 +1,563 @@
+{
+  "gerado_em": "2026-09-13 18:54",
+  "mes_referencia": "2026-07",
+  "ano_ytd": 2026,
+  "total_clientes_ativos": 1560,
+  "media_tpv_ativos_m0": 28172.43,
+  "metodologia": "Score provisorio (regra), NAO e um modelo de ML: 50% percentil de dias_sem_transacionar + 50% percentil da queda percentual do TPV do mes atual vs. media dos 3 meses anteriores, calculado apenas entre os clientes ativos no mes de referencia.",
+  "clientes": [
+    {
+      "rank": 1,
+      "documento": "cnpj_2891",
+      "nome_fantasia": "cliente_6740",
+      "risk_score": 99.9,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_237",
+      "mcc": "Alimentação",
+      "rota": "Parnaíba Centro",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 85.0,
+      "tempo_casa_anos": 0.2,
+      "tpv_m0": 0.0,
+      "tpv_m1": 0.0,
+      "tpv_m2": 2195.5,
+      "tpv_m3": 0.0,
+      "queda_tpv_pct": 100.0,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 1,
+      "canais_historico": [
+        "INBOUND"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-05",
+          "tpv": 2195.5
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "documento": "cnpj_2550",
+      "nome_fantasia": "cliente_6399",
+      "risk_score": 99.9,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_1",
+      "mcc": "Varejo",
+      "rota": "Parnaíba Sul",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 67.0,
+      "tempo_casa_anos": 3.2,
+      "tpv_m0": 0.0,
+      "tpv_m1": 0.0,
+      "tpv_m2": 5818.16,
+      "tpv_m3": 10131.44,
+      "queda_tpv_pct": 100.0,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 2,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 188.99
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 518.99
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 3246.89
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 10131.44
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 5818.16
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "documento": "cpf_3071",
+      "nome_fantasia": "cliente_3071",
+      "risk_score": 99.8,
+      "cidade": "CAMOCIM",
+      "uf": "CE",
+      "vendedor": "colaborador_303",
+      "mcc": "Serviços recorrentes",
+      "rota": "Ceará Oeste",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 58.0,
+      "tempo_casa_anos": 3.5,
+      "tpv_m0": 0.0,
+      "tpv_m1": 58.5,
+      "tpv_m2": 52.0,
+      "tpv_m3": 50.0,
+      "queda_tpv_pct": 100.0,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 3,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC",
+        "TAPONPHONE"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 50.0
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 52.0
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 58.5
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "documento": "cnpj_1523",
+      "nome_fantasia": "cliente_5372",
+      "risk_score": 99.5,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_240",
+      "mcc": "Supermercado/Farmácia",
+      "rota": "Parnaíba Sul",
+      "tipo_contrato": "com_multa",
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 32.0,
+      "tempo_casa_anos": 0.4,
+      "tpv_m0": 290.48,
+      "tpv_m1": 26991.45,
+      "tpv_m2": 40107.62,
+      "tpv_m3": 60777.89,
+      "queda_tpv_pct": 99.3,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 2,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 47496.65
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 60777.89
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 40107.62
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 26991.45
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 290.48
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "documento": "cnpj_2212",
+      "nome_fantasia": "cliente_6061",
+      "risk_score": 99.3,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_20",
+      "mcc": "Varejo",
+      "rota": "Parnaíba Centro",
+      "tipo_contrato": "com_multa",
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 32.0,
+      "tempo_casa_anos": 2.0,
+      "tpv_m0": 29.9,
+      "tpv_m1": 81.9,
+      "tpv_m2": 1594.54,
+      "tpv_m3": 4971.53,
+      "queda_tpv_pct": 98.7,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 1,
+      "canais_historico": [
+        "FRANQUIA"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 8787.92
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 9169.21
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 6643.82
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 4971.53
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 1594.54
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 81.9
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 29.9
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "documento": "cnpj_2051",
+      "nome_fantasia": "cliente_5900",
+      "risk_score": 99.2,
+      "cidade": "GRANJA",
+      "uf": "CE",
+      "vendedor": "colaborador_303",
+      "mcc": "Alimentação",
+      "rota": "Ceará Leste",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 29.0,
+      "tempo_casa_anos": 1.5,
+      "tpv_m0": 30.5,
+      "tpv_m1": 6029.2,
+      "tpv_m2": 30134.95,
+      "tpv_m3": 15855.75,
+      "queda_tpv_pct": 99.8,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 2,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 6051.05
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 4367.95
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 4097.25
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 15855.75
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 30134.95
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 6029.2
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 30.5
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "documento": "cpf_3197",
+      "nome_fantasia": "cliente_3197",
+      "risk_score": 98.8,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_3",
+      "mcc": "Serviços",
+      "rota": "Parnaíba Centro",
+      "tipo_contrato": null,
+      "cadastro_rav": "Pontual",
+      "dias_sem_transacionar": 31.0,
+      "tempo_casa_anos": 2.2,
+      "tpv_m0": 43.0,
+      "tpv_m1": 0.0,
+      "tpv_m2": 3514.94,
+      "tpv_m3": 203.5,
+      "queda_tpv_pct": 96.5,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 2,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 2398.76
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 1312.96
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 203.5
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 3514.94
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 43.0
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "documento": "cpf_264",
+      "nome_fantasia": "cliente_264",
+      "risk_score": 98.4,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_158",
+      "mcc": "Alimentação",
+      "rota": "Parnaíba Sul",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 26.0,
+      "tempo_casa_anos": 2.3,
+      "tpv_m0": 73.9,
+      "tpv_m1": 12058.07,
+      "tpv_m2": 12004.14,
+      "tpv_m3": 0.0,
+      "queda_tpv_pct": 99.1,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 1,
+      "canais_historico": [
+        "FRANQUIA"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 6102.3
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 4077.32
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 799.1
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 12004.14
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 12058.07
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 73.9
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "documento": "cpf_895",
+      "nome_fantasia": "cliente_895",
+      "risk_score": 98.4,
+      "cidade": "CAMOCIM",
+      "uf": "CE",
+      "vendedor": "colaborador_133",
+      "mcc": "Alimentação",
+      "rota": "Ceará Oeste",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 31.0,
+      "tempo_casa_anos": 2.3,
+      "tpv_m0": 450.0,
+      "tpv_m1": 60.0,
+      "tpv_m2": 425.0,
+      "tpv_m3": 16973.09,
+      "queda_tpv_pct": 92.3,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 3,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC",
+        "TAPONPHONE"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 590.0
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 351.0
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 68.0
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 16973.09
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 425.0
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 60.0
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 450.0
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "documento": "cpf_527",
+      "nome_fantasia": "cliente_527",
+      "risk_score": 98.3,
+      "cidade": "PARNAIBA",
+      "uf": "PI",
+      "vendedor": "colaborador_230",
+      "mcc": "Bens duráveis",
+      "rota": "Parnaíba Centro",
+      "tipo_contrato": null,
+      "cadastro_rav": "Automatica",
+      "dias_sem_transacionar": 29.0,
+      "tempo_casa_anos": 0.2,
+      "tpv_m0": 210.8,
+      "tpv_m1": 13380.8,
+      "tpv_m2": 0.0,
+      "tpv_m3": 0.0,
+      "queda_tpv_pct": 95.3,
+      "qtd_stonecodes": 1,
+      "qtd_stonecodes_ativos": 1,
+      "n_canais_historico": 2,
+      "canais_historico": [
+        "FRANQUIA",
+        "LINKABC"
+      ],
+      "tpv_ytd": [
+        {
+          "mes": "2026-01",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-02",
+          "tpv": 11976.5
+        },
+        {
+          "mes": "2026-03",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-04",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-05",
+          "tpv": 0.0
+        },
+        {
+          "mes": "2026-06",
+          "tpv": 13380.8
+        },
+        {
+          "mes": "2026-07",
+          "tpv": 210.8
+        }
+      ]
+    }
+  ]
+}
