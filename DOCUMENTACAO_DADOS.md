@@ -2,21 +2,24 @@
 
 Este documento explica, em detalhe, o que o script [`build_churn_data.py`](build_churn_data.py)
 faz com a base `base_edited.parquet`: o que é lido, o que é calculado/manipulado,
-e como o resultado (`clientes_risco.json`) alimenta os dois protótipos de
-dashboard (Streamlit e Quarto/Plotly). O objetivo é que qualquer pessoa consiga
+e como o resultado (`clientes_risco.json`) alimenta o dashboard
+([`streamlit_app.py`](streamlit_app.py)). O objetivo é que qualquer pessoa consiga
 reproduzir, auditar ou adaptar o pipeline sem precisar reler o código linha a linha.
+
+> Nota: o protótipo teve também uma versão estática em Quarto/Plotly
+> (`clientes_risco.qmd`), removida do repositório para manter o foco só no
+> app Streamlit — ela ainda existe no histórico do git se for útil de novo.
 
 ## 1. Visão geral
 
 ```
 base_edited.parquet  →  build_churn_data.py  →  clientes_risco.json  →  streamlit_app.py
-                                                                      →  clientes_risco.qmd
 ```
 
 `build_churn_data.py` é a **única** peça do pipeline que toca na base bruta.
-Os dois dashboards nunca leem o `.parquet` diretamente — eles só leem o JSON
-já processado. Isso significa que qualquer ajuste em "o que é calculado" ou
-"quais colunas existem na base" se resolve **em um único lugar**.
+O dashboard nunca lê o `.parquet` diretamente — só lê o JSON já processado.
+Isso significa que qualquer ajuste em "o que é calculado" ou "quais colunas
+existem na base" se resolve **em um único lugar**.
 
 Rodar o pipeline:
 
@@ -88,7 +91,7 @@ Não é um cálculo, é uma **reformatação**: filtra todas as linhas daquele
 `Documento` no ano do mês de referência (`data_referencia.dt.year == ano`) e
 monta uma lista `[{mes: "2026-01", tpv: 1234.5}, ...]` a partir da coluna
 `tpv_m0` de cada linha mensal. É isso que vira o gráfico de linha "TPV mensal
-(YTD)" nos dois dashboards.
+(YTD)" no dashboard.
 
 ### 3.4 Canais de venda já utilizados — `build_channel_info()`
 
@@ -177,9 +180,9 @@ específico:
 }
 ```
 
-Os dois dashboards (`streamlit_app.py` e `clientes_risco.qmd`) só dependem
-**desse schema** — não da base original. Enquanto o JSON continuar com essas
-mesmas chaves, os dashboards funcionam sem nenhuma alteração.
+O dashboard (`streamlit_app.py`) só depende **desse schema** — não da base
+original. Enquanto o JSON continuar com essas mesmas chaves, o app funciona
+sem nenhuma alteração.
 
 ## 6. Como trocar a regra provisória pelo modelo de ML de verdade
 
@@ -195,19 +198,17 @@ Quando o modelo de churn (treinado com `flag_churn`) estiver pronto:
      `(prob * 100).round(1)` — mantendo o range 0–100 para não precisar
      mexer em mais nada.
 3. **Não precisa mudar mais nada**: `main()` já pega o resultado dessa
-   função, ordena decrescente e pega o Top 10; o JSON, o Streamlit e o
-   Quarto continuam iguais.
-4. Atualize o texto de `payload["metodologia"]` (e o aviso `callout-note`
-   equivalente no `.qmd` e no `st.expander` do Streamlit) pra descrever o
-   modelo de verdade em vez da regra provisória — hoje esse texto está
-   *hardcoded* em três lugares (script, `.qmd`, `streamlit_app.py`) porque o
-   protótipo não tinha necessidade de centralizar isso ainda.
-5. Rode `python build_churn_data.py` de novo. Os dashboards não precisam ser
-   re-renderizados/reiniciados para "aprender" a mudança — o Streamlit já lê
-   o JSON novo ao atualizar a página (limpe o cache com `C` no app ou
-   reinicie o processo, já que `load_data()` usa `@st.cache_data`); o Quarto
-   precisa de `quarto render clientes_risco.qmd` de novo, pois o JSON é
-   embutido no HTML estático no momento do render.
+   função, ordena decrescente e pega o Top 10; o JSON e o Streamlit
+   continuam iguais.
+4. Atualize o texto de `payload["metodologia"]` (e o aviso equivalente no
+   `st.expander` do Streamlit) pra descrever o modelo de verdade em vez da
+   regra provisória — hoje esse texto está *hardcoded* em dois lugares
+   (script e `streamlit_app.py`) porque o protótipo não tinha necessidade de
+   centralizar isso ainda.
+5. Rode `python build_churn_data.py` de novo. O app não precisa ser
+   reiniciado pra "aprender" a mudança — o Streamlit já lê o JSON novo ao
+   atualizar a página (limpe o cache com `C` no app ou reinicie o processo,
+   já que `load_data()` usa `@st.cache_data`).
 
 ## 7. Como adaptar se a base mudar (colunas renomeadas/novas/removidas)
 
@@ -218,14 +219,13 @@ Quando o modelo de churn (treinado com `flag_churn`) estiver pronto:
   suficiente para não precisar disso).
 - **Coluna removida** (ex.: pararam de calcular `qtd_stonecodes_ativos`):
   remova a linha correspondente no dicionário `clientes.append({...})` em
-  `main()`. Se essa chave for usada nos dashboards (não é o caso hoje,
+  `main()`. Se essa chave for usada no dashboard (não é o caso hoje,
   `qtd_stonecodes*` só fica no JSON sem uso visual), também remova onde for
-  referenciada em `streamlit_app.py` / `clientes_risco.qmd`.
+  referenciada em `streamlit_app.py`.
 - **Coluna nova que você quer expor no card** (ex.: telefone/e-mail reais,
   se um dia a base deixar de vir anonimizada): adicione o campo em
-  `clientes.append({...})` (seção `main()`), e depois exiba nos dois
-  dashboards (um `st.markdown(...)` a mais no Streamlit; um `<div>` a mais
-  no template JS de `updateClientCard` no `.qmd`).
+  `clientes.append({...})` (seção `main()`), e depois exiba no dashboard
+  (um `st.markdown(...)` a mais em `streamlit_app.py`).
 - **`canais_venda` mudar de formato** (deixar de ser `"A|B|C"`): ajuste só
   `build_channel_info()` — é a única função que interpreta esse formato.
 - **`status_ba_m0` mudar os valores possíveis** (deixar de ser

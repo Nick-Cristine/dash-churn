@@ -1,6 +1,5 @@
 .venv/
 __pycache__/
 *.pyc
-clientes_risco_files/
 .claude/
 .streamlit/secrets.toml
