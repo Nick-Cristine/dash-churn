@@ -92,7 +92,7 @@ ambiente interno.
 -->
 <div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="fill" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
 <div id="clientes-em-risco-de-churn" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-clientes-em-risco-de-churn">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: 90px 40px 620px; grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: 90px 40px 680px; grid-auto-columns: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box" data-bslib-card-init="" data-require-bs-caller="card()" style=" background: #52C465;">
@@ -146,42 +146,114 @@ Learning</b>. Serve para validar este protótipo até o modelo real (treinado co
 </div>
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Top 10 — clique ou passe o mouse em um cliente para ver os detalhes ao lado" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Top 10 — filtre e passe o mouse ou clique em um cliente para ver os detalhes ao lado" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header"><div class="card-title"><span style="display: inline">
-Top 10 — clique ou passe o mouse em um cliente para ver os detalhes ao lado
+Top 10 — filtre e passe o mouse ou clique em um cliente para ver os detalhes ao lado
 </span></div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output cell-output-display html-fill-item html-fill-container">
 
-<div id="bar_2cbc0e2f" style="width:100%;height:560px;" class="html-fill-item html-fill-container"></div>
+<div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;" class="html-fill-item html-fill-container">
+  <input id="filterNome" type="text" placeholder="🔍 Filtrar por nome do cliente..." style="flex:1 1 100%;padding:6px 10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+  <div style="flex:1 1 220px;" class="html-fill-item html-fill-container">
+    <label style="font-size:0.72rem;color:#888;">TPV do mês atual: <span id="tpvRangeLabel"></span></label>
+    <div style="display:flex;gap:6px;align-items:center;" class="html-fill-item html-fill-container">
+      <input id="filterTpvMin" type="range" min="0.0" max="450.0" step="1" value="0.0" style="flex:1;">
+      <input id="filterTpvMax" type="range" min="0.0" max="450.0" step="1" value="450.0" style="flex:1;">
+    </div>
+  </div>
+  <div style="flex:1 1 220px;" class="html-fill-item html-fill-container">
+    <label style="font-size:0.72rem;color:#888;">Score de risco: <span id="scoreRangeLabel"></span></label>
+    <div style="display:flex;gap:6px;align-items:center;" class="html-fill-item html-fill-container">
+      <input id="filterScoreMin" type="range" min="98.3" max="99.9" step="0.1" value="98.3" style="flex:1;">
+      <input id="filterScoreMax" type="range" min="98.3" max="99.9" step="0.1" value="99.9" style="flex:1;">
+    </div>
+  </div>
+</div>
+<div id="bar_e0c9b31c" style="width:100%;height:520px;" class="html-fill-item html-fill-container"></div>
 <script>
 window.__CLIENTES__ = [{"rank": 1, "documento": "cnpj_2891", "nome_fantasia": "cliente_6740", "risk_score": 99.9, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_237", "mcc": "Alimentação", "rota": "Parnaíba Centro", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 85.0, "tempo_casa_anos": 0.2, "tpv_m0": 0.0, "tpv_m1": 0.0, "tpv_m2": 2195.5, "tpv_m3": 0.0, "queda_tpv_pct": 100.0, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 1, "canais_historico": ["INBOUND"], "tpv_ytd": [{"mes": "2026-05", "tpv": 2195.5}, {"mes": "2026-06", "tpv": 0.0}, {"mes": "2026-07", "tpv": 0.0}]}, {"rank": 2, "documento": "cnpj_2550", "nome_fantasia": "cliente_6399", "risk_score": 99.9, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_1", "mcc": "Varejo", "rota": "Parnaíba Sul", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 67.0, "tempo_casa_anos": 3.2, "tpv_m0": 0.0, "tpv_m1": 0.0, "tpv_m2": 5818.16, "tpv_m3": 10131.44, "queda_tpv_pct": 100.0, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 2, "canais_historico": ["FRANQUIA", "LINKABC"], "tpv_ytd": [{"mes": "2026-01", "tpv": 188.99}, {"mes": "2026-02", "tpv": 518.99}, {"mes": "2026-03", "tpv": 3246.89}, {"mes": "2026-04", "tpv": 10131.44}, {"mes": "2026-05", "tpv": 5818.16}, {"mes": "2026-06", "tpv": 0.0}, {"mes": "2026-07", "tpv": 0.0}]}, {"rank": 3, "documento": "cpf_3071", "nome_fantasia": "cliente_3071", "risk_score": 99.8, "cidade": "CAMOCIM", "uf": "CE", "vendedor": "colaborador_303", "mcc": "Serviços recorrentes", "rota": "Ceará Oeste", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 58.0, "tempo_casa_anos": 3.5, "tpv_m0": 0.0, "tpv_m1": 58.5, "tpv_m2": 52.0, "tpv_m3": 50.0, "queda_tpv_pct": 100.0, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 3, "canais_historico": ["FRANQUIA", "LINKABC", "TAPONPHONE"], "tpv_ytd": [{"mes": "2026-01", "tpv": 0.0}, {"mes": "2026-02", "tpv": 0.0}, {"mes": "2026-03", "tpv": 0.0}, {"mes": "2026-04", "tpv": 50.0}, {"mes": "2026-05", "tpv": 52.0}, {"mes": "2026-06", "tpv": 58.5}, {"mes": "2026-07", "tpv": 0.0}]}, {"rank": 4, "documento": "cnpj_1523", "nome_fantasia": "cliente_5372", "risk_score": 99.5, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_240", "mcc": "Supermercado/Farmácia", "rota": "Parnaíba Sul", "tipo_contrato": "com_multa", "cadastro_rav": "Automatica", "dias_sem_transacionar": 32.0, "tempo_casa_anos": 0.4, "tpv_m0": 290.48, "tpv_m1": 26991.45, "tpv_m2": 40107.62, "tpv_m3": 60777.89, "queda_tpv_pct": 99.3, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 2, "canais_historico": ["FRANQUIA", "LINKABC"], "tpv_ytd": [{"mes": "2026-01", "tpv": 0.0}, {"mes": "2026-02", "tpv": 0.0}, {"mes": "2026-03", "tpv": 47496.65}, {"mes": "2026-04", "tpv": 60777.89}, {"mes": "2026-05", "tpv": 40107.62}, {"mes": "2026-06", "tpv": 26991.45}, {"mes": "2026-07", "tpv": 290.48}]}, {"rank": 5, "documento": "cnpj_2212", "nome_fantasia": "cliente_6061", "risk_score": 99.3, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_20", "mcc": "Varejo", "rota": "Parnaíba Centro", "tipo_contrato": "com_multa", "cadastro_rav": "Automatica", "dias_sem_transacionar": 32.0, "tempo_casa_anos": 2.0, "tpv_m0": 29.9, "tpv_m1": 81.9, "tpv_m2": 1594.54, "tpv_m3": 4971.53, "queda_tpv_pct": 98.7, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 1, "canais_historico": ["FRANQUIA"], "tpv_ytd": [{"mes": "2026-01", "tpv": 8787.92}, {"mes": "2026-02", "tpv": 9169.21}, {"mes": "2026-03", "tpv": 6643.82}, {"mes": "2026-04", "tpv": 4971.53}, {"mes": "2026-05", "tpv": 1594.54}, {"mes": "2026-06", "tpv": 81.9}, {"mes": "2026-07", "tpv": 29.9}]}, {"rank": 6, "documento": "cnpj_2051", "nome_fantasia": "cliente_5900", "risk_score": 99.2, "cidade": "GRANJA", "uf": "CE", "vendedor": "colaborador_303", "mcc": "Alimentação", "rota": "Ceará Leste", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 29.0, "tempo_casa_anos": 1.5, "tpv_m0": 30.5, "tpv_m1": 6029.2, "tpv_m2": 30134.95, "tpv_m3": 15855.75, "queda_tpv_pct": 99.8, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 2, "canais_historico": ["FRANQUIA", "LINKABC"], "tpv_ytd": [{"mes": "2026-01", "tpv": 6051.05}, {"mes": "2026-02", "tpv": 4367.95}, {"mes": "2026-03", "tpv": 4097.25}, {"mes": "2026-04", "tpv": 15855.75}, {"mes": "2026-05", "tpv": 30134.95}, {"mes": "2026-06", "tpv": 6029.2}, {"mes": "2026-07", "tpv": 30.5}]}, {"rank": 7, "documento": "cpf_3197", "nome_fantasia": "cliente_3197", "risk_score": 98.8, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_3", "mcc": "Serviços", "rota": "Parnaíba Centro", "tipo_contrato": null, "cadastro_rav": "Pontual", "dias_sem_transacionar": 31.0, "tempo_casa_anos": 2.2, "tpv_m0": 43.0, "tpv_m1": 0.0, "tpv_m2": 3514.94, "tpv_m3": 203.5, "queda_tpv_pct": 96.5, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 2, "canais_historico": ["FRANQUIA", "LINKABC"], "tpv_ytd": [{"mes": "2026-01", "tpv": 2398.76}, {"mes": "2026-02", "tpv": 0.0}, {"mes": "2026-03", "tpv": 1312.96}, {"mes": "2026-04", "tpv": 203.5}, {"mes": "2026-05", "tpv": 3514.94}, {"mes": "2026-06", "tpv": 0.0}, {"mes": "2026-07", "tpv": 43.0}]}, {"rank": 8, "documento": "cpf_264", "nome_fantasia": "cliente_264", "risk_score": 98.4, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_158", "mcc": "Alimentação", "rota": "Parnaíba Sul", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 26.0, "tempo_casa_anos": 2.3, "tpv_m0": 73.9, "tpv_m1": 12058.07, "tpv_m2": 12004.14, "tpv_m3": 0.0, "queda_tpv_pct": 99.1, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 1, "canais_historico": ["FRANQUIA"], "tpv_ytd": [{"mes": "2026-01", "tpv": 6102.3}, {"mes": "2026-02", "tpv": 4077.32}, {"mes": "2026-03", "tpv": 799.1}, {"mes": "2026-04", "tpv": 0.0}, {"mes": "2026-05", "tpv": 12004.14}, {"mes": "2026-06", "tpv": 12058.07}, {"mes": "2026-07", "tpv": 73.9}]}, {"rank": 9, "documento": "cpf_895", "nome_fantasia": "cliente_895", "risk_score": 98.4, "cidade": "CAMOCIM", "uf": "CE", "vendedor": "colaborador_133", "mcc": "Alimentação", "rota": "Ceará Oeste", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 31.0, "tempo_casa_anos": 2.3, "tpv_m0": 450.0, "tpv_m1": 60.0, "tpv_m2": 425.0, "tpv_m3": 16973.09, "queda_tpv_pct": 92.3, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 3, "canais_historico": ["FRANQUIA", "LINKABC", "TAPONPHONE"], "tpv_ytd": [{"mes": "2026-01", "tpv": 590.0}, {"mes": "2026-02", "tpv": 351.0}, {"mes": "2026-03", "tpv": 68.0}, {"mes": "2026-04", "tpv": 16973.09}, {"mes": "2026-05", "tpv": 425.0}, {"mes": "2026-06", "tpv": 60.0}, {"mes": "2026-07", "tpv": 450.0}]}, {"rank": 10, "documento": "cpf_527", "nome_fantasia": "cliente_527", "risk_score": 98.3, "cidade": "PARNAIBA", "uf": "PI", "vendedor": "colaborador_230", "mcc": "Bens duráveis", "rota": "Parnaíba Centro", "tipo_contrato": null, "cadastro_rav": "Automatica", "dias_sem_transacionar": 29.0, "tempo_casa_anos": 0.2, "tpv_m0": 210.8, "tpv_m1": 13380.8, "tpv_m2": 0.0, "tpv_m3": 0.0, "queda_tpv_pct": 95.3, "qtd_stonecodes": 1, "qtd_stonecodes_ativos": 1, "n_canais_historico": 2, "canais_historico": ["FRANQUIA", "LINKABC"], "tpv_ytd": [{"mes": "2026-01", "tpv": 0.0}, {"mes": "2026-02", "tpv": 11976.5}, {"mes": "2026-03", "tpv": 0.0}, {"mes": "2026-04", "tpv": 0.0}, {"mes": "2026-05", "tpv": 0.0}, {"mes": "2026-06", "tpv": 13380.8}, {"mes": "2026-07", "tpv": 210.8}]}];
 window.__DOCS_ORDER__ = ["cpf_527", "cpf_264", "cpf_895", "cpf_3197", "cnpj_2051", "cnpj_2212", "cnpj_1523", "cpf_3071", "cnpj_2550", "cnpj_2891"];
 window.__MEDIA_TPV__ = 28172.43;
 window.__ANO_YTD__ = 2026;
+window.__CURRENT_DOC__ = null;
 (function() {
-  const figData = {"data":[{"customdata":["cpf_527","cpf_264","cpf_895","cpf_3197","cnpj_2051","cnpj_2212","cnpj_1523","cpf_3071","cnpj_2550","cnpj_2891"],"hovertemplate":"\u003cb\u003e%{y}\u003c\u002fb\u003e\u003cbr\u003eScore de risco: %{x}\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#B0B0B0"},"orientation":"h","x":{"dtype":"f8","bdata":"MzMzMzOTWECamZmZmZlYQJqZmZmZmVhAMzMzMzOzWEDNzMzMzMxYQDMzMzMz01hAAAAAAADgWEAzMzMzM\u002fNYQJqZmZmZ+VhAmpmZmZn5WEA="},"y":["cliente_527","cliente_264","cliente_895","cliente_3197","cliente_5900","cliente_6061","cliente_5372","cliente_3071","cliente_6399","cliente_6740"],"type":"bar"}],"layout":{"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","margin":{"b":0,"l":0,"r":0,"t":30},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"margin":{"t":10,"l":10,"r":10,"b":10},"xaxis":{"title":{"text":"Score de risco (0\u2013100)"}},"height":560}};
+  const figData = {"data":[{"customdata":["cpf_527","cpf_264","cpf_895","cpf_3197","cnpj_2051","cnpj_2212","cnpj_1523","cpf_3071","cnpj_2550","cnpj_2891"],"hovertemplate":"\u003cb\u003e%{y}\u003c\u002fb\u003e\u003cbr\u003eScore de risco: %{x}\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#B0B0B0"},"orientation":"h","x":{"dtype":"f8","bdata":"MzMzMzOTWECamZmZmZlYQJqZmZmZmVhAMzMzMzOzWEDNzMzMzMxYQDMzMzMz01hAAAAAAADgWEAzMzMzM\u002fNYQJqZmZmZ+VhAmpmZmZn5WEA="},"y":["cliente_527","cliente_264","cliente_895","cliente_3197","cliente_5900","cliente_6061","cliente_5372","cliente_3071","cliente_6399","cliente_6740"],"type":"bar"}],"layout":{"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","margin":{"b":0,"l":0,"r":0,"t":30},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"margin":{"t":10,"l":10,"r":10,"b":10},"xaxis":{"title":{"text":"Score de risco (0\u2013100)"}},"height":520}};
+  const STONE_RED = "#FC4828";
+  const STONE_GRAY = "#B0B0B0";
+  let visibleDocs = window.__DOCS_ORDER__.slice();
+
+  function fmtBRL(v) {
+    return "R$ " + Number(v).toLocaleString("pt-BR", {maximumFractionDigits: 0});
+  }
+
+  function getFilteredClientes() {
+    const nome = (document.getElementById("filterNome").value || "").toLowerCase();
+    const tpvMin = Math.min(parseFloat(document.getElementById("filterTpvMin").value), parseFloat(document.getElementById("filterTpvMax").value));
+    const tpvMax = Math.max(parseFloat(document.getElementById("filterTpvMin").value), parseFloat(document.getElementById("filterTpvMax").value));
+    const scoreMin = Math.min(parseFloat(document.getElementById("filterScoreMin").value), parseFloat(document.getElementById("filterScoreMax").value));
+    const scoreMax = Math.max(parseFloat(document.getElementById("filterScoreMin").value), parseFloat(document.getElementById("filterScoreMax").value));
+    document.getElementById("tpvRangeLabel").textContent = `${fmtBRL(tpvMin)} – ${fmtBRL(tpvMax)}`;
+    document.getElementById("scoreRangeLabel").textContent = `${scoreMin.toFixed(1)} – ${scoreMax.toFixed(1)}`;
+    return window.__CLIENTES__.filter(c =>
+      c.nome_fantasia.toLowerCase().includes(nome) &&
+      c.tpv_m0 >= tpvMin && c.tpv_m0 <= tpvMax &&
+      c.risk_score >= scoreMin && c.risk_score <= scoreMax
+    ).sort((a, b) => a.risk_score - b.risk_score);
+  }
+
+  function paintColors() {
+    const colors = visibleDocs.map(doc => doc === window.__CURRENT_DOC__ ? STONE_RED : STONE_GRAY);
+    Plotly.restyle("bar_e0c9b31c", {"marker.color": [colors]});
+  }
+
+  function redraw() {
+    const filtered = getFilteredClientes();
+    visibleDocs = filtered.map(c => c.documento);
+
+    if (window.__CURRENT_DOC__ && !visibleDocs.includes(window.__CURRENT_DOC__)) {
+      window.__CURRENT_DOC__ = null;
+      if (window.showEmptyCard) window.showEmptyCard();
+    }
+
+    if (filtered.length === 0) {
+      Plotly.react("bar_e0c9b31c", [{x: [], y: [], type: "bar", orientation: "h"}], figData.layout, {responsive: true, displaylogo: false});
+      return;
+    }
+
+    const colors = visibleDocs.map(doc => doc === window.__CURRENT_DOC__ ? STONE_RED : STONE_GRAY);
+    Plotly.react("bar_e0c9b31c", [{
+      x: filtered.map(c => c.risk_score),
+      y: filtered.map(c => c.nome_fantasia),
+      orientation: "h", type: "bar",
+      customdata: filtered.map(c => c.documento),
+      marker: {color: colors},
+      hovertemplate: "<b>%{y}</b><br>Score de risco: %{x}<extra></extra>",
+    }], figData.layout, {responsive: true, displaylogo: false});
+  }
+
   function draw() {
     if (!window.Plotly) { setTimeout(draw, 100); return; }
-    Plotly.newPlot("bar_2cbc0e2f", figData.data, figData.layout, {responsive: true, displaylogo: false});
-    const gd = document.getElementById("bar_2cbc0e2f");
-    const colorFor = (doc) => (doc === (window.__CURRENT_DOC__ || window.__DOCS_ORDER__[window.__DOCS_ORDER__.length-1])) ? "#FC4828" : "#B0B0B0";
-    function paint() {
-      Plotly.restyle("bar_2cbc0e2f", {"marker.color": [window.__DOCS_ORDER__.map(colorFor)]});
-    }
+    Plotly.newPlot("bar_e0c9b31c", figData.data, figData.layout, {responsive: true, displaylogo: false});
+    const gd = document.getElementById("bar_e0c9b31c");
+
     gd.on("plotly_hover", (ev) => {
       const doc = ev.points[0].customdata;
       window.__CURRENT_DOC__ = doc;
       if (window.updateClientCard) window.updateClientCard(doc);
-      paint();
+      paintColors();
     });
     gd.on("plotly_click", (ev) => {
       const doc = ev.points[0].customdata;
       window.__CURRENT_DOC__ = doc;
       if (window.updateClientCard) window.updateClientCard(doc);
-      paint();
+      paintColors();
     });
-    paint();
+
+    ["filterNome", "filterTpvMin", "filterTpvMax", "filterScoreMin", "filterScoreMax"].forEach(id => {
+      document.getElementById(id).addEventListener("input", redraw);
+    });
+    redraw();
   }
   draw();
 })();
@@ -201,14 +273,14 @@ Cliente selecionado
 <div class="cell-output cell-output-display html-fill-item html-fill-container">
 
 <div style="display:flex;flex-direction:column;gap:10px;" class="html-fill-item html-fill-container">
-  <div id="card_54ba6164" class="html-fill-item html-fill-container"></div>
-  <div id="tpv_4c793b38" style="width:100%;height:260px;" class="html-fill-item html-fill-container"></div>
+  <div id="card_df90ba36" class="html-fill-item html-fill-container"></div>
+  <div id="tpv_85dbf309" style="width:100%;height:260px;" class="html-fill-item html-fill-container"></div>
 </div>
 
 <script>
 (function() {
-  const CARD_DIV = "card_54ba6164";
-  const TPV_DIV = "tpv_4c793b38";
+  const CARD_DIV = "card_df90ba36";
+  const TPV_DIV = "tpv_85dbf309";
   const STONE_RED = "#FC4828";
   const STONE_GRAY = "#B0B0B0";
 
@@ -238,6 +310,34 @@ Recomenda-se iniciar contato ativo com o cliente o quanto antes.
 — Radar de Churn (protótipo)`;
     return {assunto, corpo};
   }
+
+  window.showEmptyCard = function() {
+    document.getElementById(CARD_DIV).innerHTML = `
+      <div style="font-size:1.15rem;font-weight:700;margin-bottom:4px;">Nenhum cliente selecionado</div>
+      <div style="font-size:0.85rem;color:#888;margin-bottom:14px;">Passe o mouse ou clique em uma barra do ranking (ou use os filtros acima) para ver os detalhes aqui.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div><div style="font-size:0.72rem;color:#888;">Score de risco</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Dias sem transacionar</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Queda de TPV (3m)</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Tempo de casa</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:0.88rem;color:#888;">
+        <div><b>Documento:</b> —</div>
+        <div><b>Vendedor:</b> —</div>
+        <div><b>Cidade/UF:</b> —</div>
+        <div><b>Tipo de contrato:</b> —</div>
+        <div><b>Rota:</b> —</div>
+        <div><b>Antecipação (RAV):</b> —</div>
+        <div><b>Segmento (MCC):</b> —</div>
+        <div><b>TPV do mês atual:</b> —</div>
+      </div>
+    `;
+    Plotly.react(TPV_DIV, [], {
+      template: "simple_white", height: 260,
+      title: "TPV mensal (selecione um cliente)",
+      margin: {t: 40, l: 40, r: 10, b: 30},
+    }, {responsive: true, displaylogo: false});
+  };
 
   window.updateClientCard = function(documento) {
     const c = window.__CLIENTES__.find(x => x.documento === documento);
@@ -309,13 +409,11 @@ Recomenda-se iniciar contato ativo com o cliente o quanto antes.
     Plotly.react(TPV_DIV, [trace], layout, {responsive: true, displaylogo: false});
   };
 
-  function initialDraw() {
-    if (!window.Plotly) { setTimeout(initialDraw, 100); return; }
-    const startDoc = window.__DOCS_ORDER__[window.__DOCS_ORDER__.length - 1];
-    window.__CURRENT_DOC__ = startDoc;
-    window.updateClientCard(startDoc);
+  function boot() {
+    if (!window.Plotly) { setTimeout(boot, 100); return; }
+    window.showEmptyCard();
   }
-  initialDraw();
+  boot();
 })();
 </script>
 </div>

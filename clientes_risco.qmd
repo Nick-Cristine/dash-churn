@@ -37,6 +37,9 @@ payload = json.loads(Path("clientes_risco.json").read_text(encoding="utf-8"))
 clientes = payload["clientes"]
 media_tpv = payload["media_tpv_ativos_m0"]
 df_rank = pd.DataFrame(clientes).sort_values("risk_score")
+
+tpv_min, tpv_max = float(df_rank["tpv_m0"].min()), float(df_rank["tpv_m0"].max())
+score_min, score_max = float(df_rank["risk_score"].min()), float(df_rank["risk_score"].max())
 ```
 
 # Clientes em Risco de Churn
@@ -74,10 +77,10 @@ Learning</b>. Serve para validar este protótipo até o modelo real (treinado co
 </div>
 ```
 
-## Row {height="620px"}
+## Row {height="680px"}
 
 ```{python}
-#| title: "Top 10 — clique ou passe o mouse em um cliente para ver os detalhes ao lado"
+#| title: "Top 10 — filtre e passe o mouse ou clique em um cliente para ver os detalhes ao lado"
 bar_div = "bar_" + uuid.uuid4().hex[:8]
 
 fig_bar = go.Figure(go.Bar(
@@ -88,7 +91,7 @@ fig_bar = go.Figure(go.Bar(
 ))
 _ = fig_bar.update_layout(
     template="simple_white", margin=dict(t=10, l=10, r=10, b=10),
-    xaxis_title="Score de risco (0–100)", height=560,
+    xaxis_title="Score de risco (0–100)", height=520,
 )
 fig_bar_json = fig_bar.to_json()
 
@@ -96,35 +99,108 @@ clientes_json = json.dumps(clientes, ensure_ascii=False)
 docs_order_json = json.dumps(df_rank["documento"].tolist())
 
 display(HTML(f'''
-<div id="{bar_div}" style="width:100%;height:560px;"></div>
+<div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;">
+  <input id="filterNome" type="text" placeholder="🔍 Filtrar por nome do cliente..."
+    style="flex:1 1 100%;padding:6px 10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+  <div style="flex:1 1 220px;">
+    <label style="font-size:0.72rem;color:#888;">TPV do mês atual: <span id="tpvRangeLabel"></span></label>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <input id="filterTpvMin" type="range" min="{tpv_min}" max="{tpv_max}" step="1" value="{tpv_min}" style="flex:1;">
+      <input id="filterTpvMax" type="range" min="{tpv_min}" max="{tpv_max}" step="1" value="{tpv_max}" style="flex:1;">
+    </div>
+  </div>
+  <div style="flex:1 1 220px;">
+    <label style="font-size:0.72rem;color:#888;">Score de risco: <span id="scoreRangeLabel"></span></label>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <input id="filterScoreMin" type="range" min="{score_min}" max="{score_max}" step="0.1" value="{score_min}" style="flex:1;">
+      <input id="filterScoreMax" type="range" min="{score_min}" max="{score_max}" step="0.1" value="{score_max}" style="flex:1;">
+    </div>
+  </div>
+</div>
+<div id="{bar_div}" style="width:100%;height:520px;"></div>
 <script>
 window.__CLIENTES__ = {clientes_json};
 window.__DOCS_ORDER__ = {docs_order_json};
 window.__MEDIA_TPV__ = {media_tpv};
 window.__ANO_YTD__ = {payload["ano_ytd"]};
+window.__CURRENT_DOC__ = null;
 (function() {{
   const figData = {fig_bar_json};
+  const STONE_RED = "{STONE_RED}";
+  const STONE_GRAY = "{STONE_GRAY}";
+  let visibleDocs = window.__DOCS_ORDER__.slice();
+
+  function fmtBRL(v) {{
+    return "R$ " + Number(v).toLocaleString("pt-BR", {{maximumFractionDigits: 0}});
+  }}
+
+  function getFilteredClientes() {{
+    const nome = (document.getElementById("filterNome").value || "").toLowerCase();
+    const tpvMin = Math.min(parseFloat(document.getElementById("filterTpvMin").value), parseFloat(document.getElementById("filterTpvMax").value));
+    const tpvMax = Math.max(parseFloat(document.getElementById("filterTpvMin").value), parseFloat(document.getElementById("filterTpvMax").value));
+    const scoreMin = Math.min(parseFloat(document.getElementById("filterScoreMin").value), parseFloat(document.getElementById("filterScoreMax").value));
+    const scoreMax = Math.max(parseFloat(document.getElementById("filterScoreMin").value), parseFloat(document.getElementById("filterScoreMax").value));
+    document.getElementById("tpvRangeLabel").textContent = `${{fmtBRL(tpvMin)}} – ${{fmtBRL(tpvMax)}}`;
+    document.getElementById("scoreRangeLabel").textContent = `${{scoreMin.toFixed(1)}} – ${{scoreMax.toFixed(1)}}`;
+    return window.__CLIENTES__.filter(c =>
+      c.nome_fantasia.toLowerCase().includes(nome) &&
+      c.tpv_m0 >= tpvMin && c.tpv_m0 <= tpvMax &&
+      c.risk_score >= scoreMin && c.risk_score <= scoreMax
+    ).sort((a, b) => a.risk_score - b.risk_score);
+  }}
+
+  function paintColors() {{
+    const colors = visibleDocs.map(doc => doc === window.__CURRENT_DOC__ ? STONE_RED : STONE_GRAY);
+    Plotly.restyle("{bar_div}", {{"marker.color": [colors]}});
+  }}
+
+  function redraw() {{
+    const filtered = getFilteredClientes();
+    visibleDocs = filtered.map(c => c.documento);
+
+    if (window.__CURRENT_DOC__ && !visibleDocs.includes(window.__CURRENT_DOC__)) {{
+      window.__CURRENT_DOC__ = null;
+      if (window.showEmptyCard) window.showEmptyCard();
+    }}
+
+    if (filtered.length === 0) {{
+      Plotly.react("{bar_div}", [{{x: [], y: [], type: "bar", orientation: "h"}}], figData.layout, {{responsive: true, displaylogo: false}});
+      return;
+    }}
+
+    const colors = visibleDocs.map(doc => doc === window.__CURRENT_DOC__ ? STONE_RED : STONE_GRAY);
+    Plotly.react("{bar_div}", [{{
+      x: filtered.map(c => c.risk_score),
+      y: filtered.map(c => c.nome_fantasia),
+      orientation: "h", type: "bar",
+      customdata: filtered.map(c => c.documento),
+      marker: {{color: colors}},
+      hovertemplate: "<b>%{{y}}</b><br>Score de risco: %{{x}}<extra></extra>",
+    }}], figData.layout, {{responsive: true, displaylogo: false}});
+  }}
+
   function draw() {{
     if (!window.Plotly) {{ setTimeout(draw, 100); return; }}
     Plotly.newPlot("{bar_div}", figData.data, figData.layout, {{responsive: true, displaylogo: false}});
     const gd = document.getElementById("{bar_div}");
-    const colorFor = (doc) => (doc === (window.__CURRENT_DOC__ || window.__DOCS_ORDER__[window.__DOCS_ORDER__.length-1])) ? "{STONE_RED}" : "{STONE_GRAY}";
-    function paint() {{
-      Plotly.restyle("{bar_div}", {{"marker.color": [window.__DOCS_ORDER__.map(colorFor)]}});
-    }}
+
     gd.on("plotly_hover", (ev) => {{
       const doc = ev.points[0].customdata;
       window.__CURRENT_DOC__ = doc;
       if (window.updateClientCard) window.updateClientCard(doc);
-      paint();
+      paintColors();
     }});
     gd.on("plotly_click", (ev) => {{
       const doc = ev.points[0].customdata;
       window.__CURRENT_DOC__ = doc;
       if (window.updateClientCard) window.updateClientCard(doc);
-      paint();
+      paintColors();
     }});
-    paint();
+
+    ["filterNome", "filterTpvMin", "filterTpvMax", "filterScoreMin", "filterScoreMax"].forEach(id => {{
+      document.getElementById(id).addEventListener("input", redraw);
+    }});
+    redraw();
   }}
   draw();
 }})();
@@ -176,6 +252,34 @@ Recomenda-se iniciar contato ativo com o cliente o quanto antes.
 — Radar de Churn (protótipo)`;
     return {{assunto, corpo}};
   }}
+
+  window.showEmptyCard = function() {{
+    document.getElementById(CARD_DIV).innerHTML = `
+      <div style="font-size:1.15rem;font-weight:700;margin-bottom:4px;">Nenhum cliente selecionado</div>
+      <div style="font-size:0.85rem;color:#888;margin-bottom:14px;">Passe o mouse ou clique em uma barra do ranking (ou use os filtros acima) para ver os detalhes aqui.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div><div style="font-size:0.72rem;color:#888;">Score de risco</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Dias sem transacionar</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Queda de TPV (3m)</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+        <div><div style="font-size:0.72rem;color:#888;">Tempo de casa</div><div style="font-size:1.3rem;font-weight:700;">—</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:0.88rem;color:#888;">
+        <div><b>Documento:</b> —</div>
+        <div><b>Vendedor:</b> —</div>
+        <div><b>Cidade/UF:</b> —</div>
+        <div><b>Tipo de contrato:</b> —</div>
+        <div><b>Rota:</b> —</div>
+        <div><b>Antecipação (RAV):</b> —</div>
+        <div><b>Segmento (MCC):</b> —</div>
+        <div><b>TPV do mês atual:</b> —</div>
+      </div>
+    `;
+    Plotly.react(TPV_DIV, [], {{
+      template: "simple_white", height: 260,
+      title: "TPV mensal (selecione um cliente)",
+      margin: {{t: 40, l: 40, r: 10, b: 30}},
+    }}, {{responsive: true, displaylogo: false}});
+  }};
 
   window.updateClientCard = function(documento) {{
     const c = window.__CLIENTES__.find(x => x.documento === documento);
@@ -247,13 +351,11 @@ Recomenda-se iniciar contato ativo com o cliente o quanto antes.
     Plotly.react(TPV_DIV, [trace], layout, {{responsive: true, displaylogo: false}});
   }};
 
-  function initialDraw() {{
-    if (!window.Plotly) {{ setTimeout(initialDraw, 100); return; }}
-    const startDoc = window.__DOCS_ORDER__[window.__DOCS_ORDER__.length - 1];
-    window.__CURRENT_DOC__ = startDoc;
-    window.updateClientCard(startDoc);
+  function boot() {{
+    if (!window.Plotly) {{ setTimeout(boot, 100); return; }}
+    window.showEmptyCard();
   }}
-  initialDraw();
+  boot();
 }})();
 </script>
 '''))

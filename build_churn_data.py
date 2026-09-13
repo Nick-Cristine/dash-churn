@@ -18,6 +18,7 @@ apenas entre os clientes ATIVOS no mês mais recente:
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -36,7 +37,6 @@ def load_base() -> pd.DataFrame:
 def compute_risk_score(snap: pd.DataFrame) -> pd.Series:
     dias = snap["dias_sem_transacionar"].fillna(snap["dias_sem_transacionar"].median())
     baseline = snap[["tpv_m1", "tpv_m2", "tpv_m3"]].mean(axis=1)
-    import numpy as np
     queda_pct = ((baseline - snap["tpv_m0"]) / baseline.replace(0, np.nan)).clip(lower=0, upper=1)
     queda_pct = queda_pct.fillna(0.0)
 
