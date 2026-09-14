@@ -67,25 +67,29 @@ def select_client(doc: str):
 left, right = st.columns([1.1, 1.6], gap="large")
 
 with left:
-    st.subheader("Filtros")
     f1, f2, f3 = st.columns(3)
-    nome_filtro = f1.text_input("Nome do cliente", placeholder="ex.: cliente_6740")
-    tpv_min, tpv_max = float(df["tpv_m0"].min()), float(df["tpv_m0"].max())
-    score_min, score_max = float(df["risk_score"].min()), float(df["risk_score"].max())
-    tpv_range = f2.slider(
-        "TPV do mês atual (R$)", min_value=tpv_min, max_value=tpv_max,
-        value=(tpv_min, tpv_max),
-    )
-    score_range = f3.slider(
-        "Score de risco", min_value=score_min, max_value=score_max,
-        value=(score_min, score_max),
+    nome_opcoes = ["Todos"] + sorted(df["nome_fantasia"].unique().tolist())
+    nome_filtro = f1.selectbox("Nome do cliente", nome_opcoes)
+
+    tpv_opcoes = ["Todos"] + sorted(df["tpv_m0"].unique().tolist())
+    tpv_filtro = f2.selectbox(
+        "TPV do mês atual (R$)", tpv_opcoes,
+        format_func=lambda v: v if v == "Todos" else f"R$ {v:,.2f}",
     )
 
-    df_filtrado = df[
-        df["nome_fantasia"].str.contains(nome_filtro, case=False, na=False)
-        & df["tpv_m0"].between(tpv_range[0], tpv_range[1])
-        & df["risk_score"].between(score_range[0], score_range[1])
-    ]
+    score_opcoes = ["Todos"] + sorted(df["risk_score"].unique().tolist(), reverse=True)
+    score_filtro = f3.selectbox(
+        "Score de risco", score_opcoes,
+        format_func=lambda v: v if v == "Todos" else f"{v:.1f}",
+    )
+
+    df_filtrado = df.copy()
+    if nome_filtro != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["nome_fantasia"] == nome_filtro]
+    if tpv_filtro != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["tpv_m0"] == tpv_filtro]
+    if score_filtro != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["risk_score"] == score_filtro]
 
     if st.session_state.selected_doc not in df_filtrado["documento"].values:
         st.session_state.selected_doc = None
