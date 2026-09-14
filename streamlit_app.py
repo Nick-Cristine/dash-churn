@@ -206,11 +206,6 @@ with right:
 **Canais já utilizados ({cliente['n_canais_historico']}):** {', '.join(cliente['canais_historico'])}
 """
             )
-        st.caption(
-            "ℹ️ A base disponível para este protótipo já está anonimizada (sem telefone/e-mail "
-            "reais do cliente). Em produção, os campos de contato viriam do CRM."
-        )
-
         ytd = pd.DataFrame(cliente["tpv_ytd"])
         fig_tpv = go.Figure(
             go.Scatter(
