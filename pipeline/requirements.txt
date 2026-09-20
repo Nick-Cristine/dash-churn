@@ -1,0 +1,11 @@
+# Dependências para RODAR O PIPELINE (gerar_painel_json.py) — não confundir com
+# o requirements.txt da raiz, que é só o que o app Streamlit precisa pra rodar.
+# Instalar com: python -m pip install -r pipeline/requirements.txt
+pandas
+numpy
+pyarrow
+plotly
+nbformat
+lightgbm
+scikit-learn
+joblib
